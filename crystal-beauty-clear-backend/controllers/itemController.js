@@ -1,13 +1,15 @@
 import Item from "../models/item.js";
 
 export function getAllItems(req, res) {
+
+
     Item.find().then(
         (items) => {
             res.json(items);
         }
     ).catch(
         () => {
-            res.json({
+            res.status(500).json({
                 message: "Error"
             });
         }
@@ -15,8 +17,17 @@ export function getAllItems(req, res) {
 }
 
 export function saveItem(req, res) {
-    const item = new Item(req.body);
-    Item.save().then(
+
+    console.log(req.user);
+    if (req.user.role !== "admin") {
+        res.status(403).json({
+            message: "You cannot save items"
+        });
+        return;
+    }
+
+    const newItem = new Item(req.body);
+    newItem.save().then(
         () => {
             res.json({
                 message: "Item saved"
@@ -24,7 +35,7 @@ export function saveItem(req, res) {
         }
     ).catch(
         () => {
-            res.json({
+            res.status(500).json({
                 message: "Error"
             });
         }

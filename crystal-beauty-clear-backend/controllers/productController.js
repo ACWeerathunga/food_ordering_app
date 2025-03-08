@@ -69,7 +69,7 @@ export function deleteProduct(req, res) {
             res.status(500).json({ message: "Product not deleted", error: err.message });
         });
 }
-export function updateProduct(req, res) {
+ export function updateProduct(req, res) {
     if (!req.user) {
         return res.status(403).json({ message: "You need to login first" });
     }
@@ -87,7 +87,7 @@ export function updateProduct(req, res) {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        res.json({ message: "Product updated successfully" });
+        res.json({ message: "Product updated successfully", updatedProduct });
     })
     .catch((err) => {
         console.error("Error updating product:", err);
